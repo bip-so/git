@@ -1,0 +1,365 @@
+definitions:
+  models.ApiResponse:
+    type: object
+  models.Block:
+    properties:
+      id:
+        type: string
+      mentionedGroupIds:
+        items:
+          type: string
+        type: array
+      mentionedPageIds:
+        items:
+          type: string
+        type: array
+      mentionedUserIds:
+        items:
+          type: string
+        type: array
+      position:
+        type: integer
+      properties:
+        type: string
+      text:
+        type: string
+      tweetId:
+        type: string
+      type:
+        type: string
+      url:
+        type: string
+      userId:
+        type: string
+    type: object
+  models.CreateBlockSnapshotData:
+    properties:
+      blocks:
+        items:
+          $ref: '#/definitions/models.Block'
+        type: array
+      branchName:
+        type: string
+      messageBlockId:
+        type: string
+    type: object
+  models.CreateSnapshotData:
+    properties:
+      blocks:
+        items:
+          $ref: '#/definitions/models.Block'
+        type: array
+      branchName:
+        type: string
+      fromBranchName:
+        type: string
+      message:
+        type: string
+    type: object
+  models.MergeBranchesData:
+    properties:
+      changesAccepted:
+        additionalProperties: true
+        type: object
+      fromBranchCreatedCommitId:
+        type: string
+      fromBranchName:
+        type: string
+      mergeType:
+        type: string
+      toBranchName:
+        type: string
+    type: object
+info:
+  contact:
+    email: santhosh@bip.so
+    name: API Support
+    url: https://bip.so
+  description: Bip Git Backend server.
+  license:
+    name: Apache 2.0
+  termsOfService: https://bip.so/terms-of-service/
+  title: Bip Git
+paths:
+  /attribution/all/branch/{branchName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      - description: Branch Name
+        in: query
+        name: lastSyncedCommitId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Get Branch All Attributions
+      tags:
+      - Atrribution APIs
+  /attribution/branch/{branchName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Get Branch Attribution
+      tags:
+      - Atrribution APIs
+  /branch/{branchName}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Delete Branch API
+      tags:
+      - Branch APIs
+  /branch/create/{branchName}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Create Branches API
+      tags:
+      - Branch APIs
+  /history/branch/{branchName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      - description: Branch Name
+        in: query
+        name: start
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Get Branch History
+      tags:
+      - Branch History Log APIs
+  /mergereq/merge:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Merge Branches Data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.MergeBranchesData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Merge Branches API
+      tags:
+      - Merge Branches
+  /snapshot/block/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Snapshot Data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateBlockSnapshotData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Create Block snapshot
+      tags:
+      - Snapshot APIs
+  /snapshot/branch/{branchName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: branchName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Get Branch snapshot
+      tags:
+      - Snapshot APIs
+  /snapshot/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Snapshot Data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateSnapshotData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Create snapshot
+      tags:
+      - Snapshot APIs
+  /snapshot/get/{commitId}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Branch Name
+        in: path
+        name: commitId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ApiResponse'
+      security:
+      - bearerAuth: []
+      summary: Get Snapshot By ID
+      tags:
+      - Snapshot APIs
+schemes:
+- http
+- https
+securityDefinitions:
+  bearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

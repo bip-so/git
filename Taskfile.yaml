@@ -1,0 +1,15 @@
+version: "3"
+
+tasks:
+  build:
+    cmds:
+      - go build
+  air:
+    cmds:
+      - air
+  run:
+    cmds:
+      - go run main.go
+  pgbin:
+    cmds:
+      - cd libgit2-backends && mkdir -p build && cd build && cmake ../postgres && cmake --build .

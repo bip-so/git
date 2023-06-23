@@ -1,0 +1,19 @@
+.DS_Store
+bin
+bipgit
+config.stage.yaml
+config.prod.yaml
+config.yaml
+deploy/*.pem
+config/
+.env
+# Visual Studio Code
+.vscode/*
+.history/
+
+# Executables
+bip.exe
+__debug_bin
+gin-bin
+.idea/workspace.xml
+/production.env
